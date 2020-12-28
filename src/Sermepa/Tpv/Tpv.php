@@ -175,7 +175,7 @@ class Tpv
     public function setOrder($order = '')
     {
         $order = trim($order);
-        if (strlen($order) <= 3 || strlen($order) > 12 || !is_numeric(substr($order, 0, 4))) {
+        if (strlen($order) <= 3 || strlen($order) > 12 /*|| !is_numeric(substr($order, 0, 4))*/) {
             throw new TpvException('Order id must be a 4 digit string at least, maximum 12 characters.');
         }
 
