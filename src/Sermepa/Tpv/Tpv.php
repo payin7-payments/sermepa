@@ -9,6 +9,18 @@ use Exception;
  */
 class Tpv
 {
+    const COF_INIT_REQ = 'S';
+    const COF_INIT_NONREQ = 'N';
+
+    const COF_TYPE_INSTALLMENTS = 'I';
+    const COF_TYPE_RECURRING = 'R';
+    const COF_TYPE_REAUTH = 'H';
+    const COF_TYPE_RESUBMIT = 'E';
+    const COF_TYPE_DELAYED = 'D';
+    const COF_TYPE_INCREMENTAL = 'M';
+    const COF_TYPE_NOSHOW = 'N';
+    const COF_TYPE_OTHER = 'C';
+
     protected $_setEnvironment;
     protected $_setNameForm;
     protected $_setIdForm;
@@ -422,6 +434,26 @@ class Tpv
     public function setMerchantIdentifier($identifier = null)
     {
         $this->_setParameters['DS_MERCHANT_IDENTIFIER'] = $identifier;
+    }
+
+    public function setMerchantCofInit($identifier = null)
+    {
+        $this->_setParameters['DS_MERCHANT_COF_INI'] = $identifier;
+    }
+
+    public function setMerchantCofType($identifier = null)
+    {
+        $this->_setParameters['DS_MERCHANT_COF_TYPE'] = $identifier;
+    }
+
+    public function setMerchantCofTxnId($identifier = null)
+    {
+        $this->_setParameters['DS_MERCHANT_COF_TXNID'] = $identifier;
+    }
+
+    public function setMerchantExcepSca($identifier = null)
+    {
+        $this->_setParameters['DS_MERCHANT_EXCEP_SCA'] = $identifier;
     }
 
     /**
