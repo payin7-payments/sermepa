@@ -28,7 +28,7 @@ class Tpv
     {
         $this->setEnvironment();
 
-        $this->_setParameters = array();
+        $this->_setParameters = [];
         $this->_setVersion = 'HMAC_SHA256_V1';
         $this->_setNameForm = 'redsys_form';
         $this->_setIdForm = 'redsys_form';
@@ -135,7 +135,7 @@ class Tpv
      */
     public function setChargeExpiryDate($date)
     {
-        if ( ! $this->isValidDate($date) ) {
+        if (!$this->isValidDate($date)) {
             throw new TpvException('Date is not valid.');
         }
 
@@ -154,7 +154,7 @@ class Tpv
      */
     public function setDateFrecuency($dateFrecuency)
     {
-        if ( !is_numeric($dateFrecuency) || (strlen($dateFrecuency) < 1 || strlen($dateFrecuency) > 5) ) {
+        if (!is_numeric($dateFrecuency) || (strlen($dateFrecuency) < 1 || strlen($dateFrecuency) > 5)) {
             throw new TpvException('Date frecuency is not valid.');
         }
 
@@ -162,7 +162,6 @@ class Tpv
 
         return $this;
     }
-
 
 
     /**
@@ -173,7 +172,7 @@ class Tpv
      * @return $this
      * @throws TpvException
      */
-    public function setOrder($order='')
+    public function setOrder($order = '')
     {
         $order = trim($order);
         if (strlen($order) <= 3 || strlen($order) > 12 || !is_numeric(substr($order, 0, 4))) {
@@ -222,7 +221,7 @@ class Tpv
      * @return $this
      * @throws TpvException
      */
-    public function setMerchantcode($fuc='')
+    public function setMerchantcode($fuc = '')
     {
         if ($this->isEmpty($fuc)) {
             throw new TpvException('Please add Fuc');
@@ -415,6 +414,16 @@ class Tpv
         return $this;
     }
 
+    public function setMerchantExtraData($data = null)
+    {
+        $this->_setParameters['DS_MERCHANT_MERCHANTDATA'] = $data;
+    }
+
+    public function setMerchantIdentifier($identifier = null)
+    {
+        $this->_setParameters['DS_MERCHANT_IDENTIFIER'] = $identifier;
+    }
+
     /**
      * Set enviroment
      *
@@ -429,7 +438,7 @@ class Tpv
         if ($environment === 'live') {
             //Live
             $this->_setEnvironment = 'https://sis.redsys.es/sis/realizarPago';
-        } elseif ($environment === 'test') {
+        } else if ($environment === 'test') {
             //Test
             $this->_setEnvironment = 'https://sis-t.redsys.es:25443/sis/realizarPago';
         } else {
@@ -441,8 +450,8 @@ class Tpv
 
     /**
      * @param string $environment
-     * @deprecated Use `setEnvironment`
      * @return $this
+     * @deprecated Use `setEnvironment`
      */
     public function setEnviroment($environment = 'test')
     {
@@ -491,7 +500,7 @@ class Tpv
      * @return $this
      * @throws Exception
      */
-    public function setMerchantData($merchantdata='')
+    public function setMerchantData($merchantdata = '')
     {
         if ($this->isEmpty($merchantdata)) {
             throw new TpvException('Add merchant data');
@@ -500,6 +509,13 @@ class Tpv
         $this->_setParameters['DS_MERCHANT_MERCHANTDATA'] = trim($merchantdata);
 
         return $this;
+    }
+
+    public function setGroup($group = '')
+    {
+        if (strlen(trim($group)) > 0) {
+            $this->_setParameters['DS_MERCHANT_GROUP'] = trim($group);
+        }
     }
 
     /**
@@ -587,7 +603,7 @@ class Tpv
      * @return $this
      * @throws TpvException
      */
-    public function setPan($pan=0)
+    public function setPan($pan = 0)
     {
         if (intval($pan) == 0) {
             throw new TpvException('Pan not valid');
@@ -607,9 +623,9 @@ class Tpv
      * @return $this
      * @throws TpvException
      */
-    public function setExpiryDate($expirydate='')
+    public function setExpiryDate($expirydate = '')
     {
-        if ( !$this->isExpiryDate($expirydate) ) {
+        if (!$this->isExpiryDate($expirydate)) {
             throw new TpvException('Expire date is not valid');
         }
         $this->_setParameters['DS_MERCHANT_EXPIRYDATE'] = $expirydate;
@@ -625,15 +641,15 @@ class Tpv
      * @throws TpvException
      */
 
-    public function setParameters($parameters=[])
+    public function setParameters($parameters = [])
     {
-        if(!is_array($parameters)) {
+        if (!is_array($parameters)) {
             throw new TpvException('Paramaters is not an array');
         }
 
         $keys = array_keys($parameters);
 
-        if(array_keys($keys) === $keys ) {
+        if (array_keys($keys) === $keys) {
             throw new TpvException('Paramaters is not an array associative');
         }
 
@@ -650,7 +666,7 @@ class Tpv
      * @return $this
      * @throws TpvException
      */
-    public function setCVV2($cvv2=0)
+    public function setCVV2($cvv2 = 0)
     {
         if (intval($cvv2) == 0) {
             throw new TpvException('CVV2 is not valid');
@@ -713,7 +729,8 @@ class Tpv
         $value = 'Send',
         $style = '',
         $cssClass = ''
-    ) {
+    )
+    {
         $this->_setNameSubmit = $name;
         $this->_setIdSubmit = $id;
         $this->_setValueSubmit = $value;
@@ -731,7 +748,7 @@ class Tpv
     public function executeRedirection($return = false)
     {
         $html = $this->createForm();
-        $html .= '<script>document.forms["'.$this->_setNameForm.'"].submit();</script>';
+        $html .= '<script>document.forms["' . $this->_setNameForm . '"].submit();</script>';
 
         if (!$return) {
             echo $html;
@@ -750,11 +767,11 @@ class Tpv
     public function createForm()
     {
         $form = '
-            <form action="'.$this->_setEnvironment.'" method="post" id="'.$this->_setIdForm.'" name="'.$this->_setNameForm.'" >
-                <input type="hidden" name="Ds_MerchantParameters" value="'.$this->generateMerchantParameters().'"/>
-                <input type="hidden" name="Ds_Signature" value="'.$this->_setSignature.'"/>
-                <input type="hidden" name="Ds_SignatureVersion" value="'.$this->_setVersion.'"/>
-                <input type="submit" name="'.$this->_setNameSubmit.'" id="'.$this->_setIdSubmit.'" value="'.$this->_setValueSubmit.'" '.($this->_setStyleSubmit != '' ? ' style="'.$this->_setStyleSubmit.'"' : '').' '.($this->_setClassSubmit != '' ? ' class="'.$this->_setClassSubmit.'"' : '').'>
+            <form action="' . $this->_setEnvironment . '" method="post" id="' . $this->_setIdForm . '" name="' . $this->_setNameForm . '" >
+                <input type="hidden" name="Ds_MerchantParameters" value="' . $this->generateMerchantParameters() . '"/>
+                <input type="hidden" name="Ds_Signature" value="' . $this->_setSignature . '"/>
+                <input type="hidden" name="Ds_SignatureVersion" value="' . $this->_setVersion . '"/>
+                <input type="submit" name="' . $this->_setNameSubmit . '" id="' . $this->_setIdSubmit . '" value="' . $this->_setValueSubmit . '" ' . ($this->_setStyleSubmit != '' ? ' style="' . $this->_setStyleSubmit . '"' : '') . ' ' . ($this->_setClassSubmit != '' ? ' class="' . $this->_setClassSubmit . '"' : '') . '>
             </form>
         ';
 
@@ -764,13 +781,13 @@ class Tpv
     /**
      * Check if properly made ​​the purchase.
      *
-     * @param string $key      Key
-     * @param array  $postData Data received by the bank
+     * @param string $key Key
+     * @param array $postData Data received by the bank
      *
      * @return bool
      * @throws TpvException
      */
-    public function check($key = '', $postData)
+    public function check($key, $postData)
     {
         if (!isset($postData)) {
             throw new TpvException("Add data return of bank");
@@ -870,7 +887,7 @@ class Tpv
      * Encrypt to 3DES
      *
      * @param string $data Data for encrypt
-     * @param string $key  Key
+     * @param string $key Key
      *
      * @return string
      */
@@ -912,7 +929,7 @@ class Tpv
      * @param string $expirydate
      * @return boolean
      */
-    protected function isExpiryDate($expirydate='')
+    protected function isExpiryDate($expirydate = '')
     {
         return (strlen(trim($expirydate)) == 4 && is_numeric($expirydate));
     }
@@ -923,9 +940,9 @@ class Tpv
      * @param string $order
      * @return boolean
      */
-    protected function isValidOrder($order='')
+    protected function isValidOrder($order = '')
     {
-        return ( strlen($order) >= 4 && strlen($order) <= 12 && is_numeric(substr($order, 0, 4)) )?true:false;
+        return (strlen($order) >= 4 && strlen($order) <= 12 && is_numeric(substr($order, 0, 4))) ? true : false;
 
     }
 

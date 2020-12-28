@@ -1,8 +1,8 @@
 {
-  "name": "sermepa/sermepa",
+  "name": "payin7-payments/sermepa",
   "description": "Pasarela de pago Redsys, Sermepa",
   "keywords": ["sermepa", "payment", "pasarela", "lacaixa", "sabadell", "redsys"],
-  "homepage": "https://github.com/ssheduardo/sermepa",
+  "homepage": "https://github.com/payin7-payments/sermepa",
   "license": "MIT",
   "authors": [
     {
